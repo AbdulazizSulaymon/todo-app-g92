@@ -3,7 +3,7 @@ import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Input, ListGroup, ListGroupItem } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { setValue } from "../../redux/actions"
 
 const Todo = () => {
     const value = useSelector(state => state.value);
@@ -12,12 +12,16 @@ const Todo = () => {
     const dispatch = useDispatch();
 
     const typing = (event) => {
-        const action = { type: "SET_VALUE", payload: event.target.value }
-        dispatch(action);
+        setValue(dispatch, event.target.value)
     }
 
     const add = () => {
         const action = { type: "ADD_TASK", payload: value }
+        dispatch(action);
+    }
+
+    const deleteTask = (index) => {
+        const action = { type: "DELETE_TASK", payload: index };
         dispatch(action);
     }
 
@@ -39,7 +43,7 @@ const Todo = () => {
 
                             <span>{index + 1}. {value.title}</span>
 
-                            <Button color="danger">
+                            <Button color="danger" onClick={() => deleteTask(index)}>
                                 <FontAwesomeIcon icon={faTrash} />
                             </Button>
 

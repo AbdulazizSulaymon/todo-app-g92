@@ -1,31 +1,12 @@
-import { createStore } from "redux";
+import { applyMiddleware, createStore } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import thunk from "redux-thunk";
+import reducer from "./reducer";
 
-const initialState = {
-    value: "task",
-    tasks: [
-        { title: "task 001" }
-    ]
-}
-
-const reducer = (state = initialState, action) => {
-    switch (action.type) {
-        case "SET_VALUE":
-            return {
-                ...state,
-                value: action.payload
-            };
-
-        case "ADD_TASK":
-            return {
-                ...state,
-                value: "",
-                tasks: [...state.tasks, { title: action.payload }]
-            }
-
-        default: return state;
-    }
-}
-
-const store = createStore(reducer);
+const middleware = [thunk];
+const store = createStore(
+    reducer,
+    composeWithDevTools(applyMiddleware(...middleware))
+);
 
 export default store;
